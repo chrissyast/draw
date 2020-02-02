@@ -2,7 +2,7 @@
     <v-app>
         <div class="hello">
             <form @submit.prevent="addPerson()" style="text-align: center">
-                <div class="d-flex pa-2">
+                <div class="d-flex pa-2 ma-5">
                     <v-text-field outlined true width full-width false placeholder="Enter a name here" v-model="person" hide-details true style="width: 50%; display: inline-block"/>
                     <v-btn color="purple" v-on:click="calculate" :disabled="this.people.length < 3" style="display: inline-block; height:inherit">Let's buy some gifts!</v-btn>
                 </div>
