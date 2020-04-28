@@ -19,7 +19,7 @@
                         elevation="8"
                 >
                 <v-system-bar v-bind:color="colour(index) + ' lighten-' + (index % 6)">
-                    <img src="../assets/images/delete.png" style="background-color: transparent;  filter: invert(100%);
+                    <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
       -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson(index)" align="right"/>
                 </v-system-bar>
                     <h1 style="padding: 0px 8px">{{person}}</h1>
@@ -45,7 +45,11 @@ import API from '../api'
               errors: [],
               result: [],
               showValidation: false,
-              showResults: false
+              showResults: false,
+              colours: {
+                  "--main-colour":"blue",
+                  "--secondary-colour":"orange"
+              }
             }
         },
         computed: {
@@ -73,12 +77,11 @@ import API from '../api'
                 return props
             },
             colour(index = 0) {
-
                 // TODO implement row count from https://stackoverflow.com/a/49090306/8940624 so that you always get a new colour on wrap.
                 // TODO reverse fading direct for alternate colour (i.e. go from lighter to normal)
-               if (Math.floor(index / 6) % 2)
-                return getComputedStyle(document.documentElement).getPropertyValue('--main-colour')
-                else return getComputedStyle(document.documentElement).getPropertyValue('--secondary-colour')
+               if (!(Math.floor(index / 6) % 2))
+                return this.colours['--secondary-colour']
+                else return this.colours['--main-colour']
             },
             addPerson() {
                 this.showValidation = false;
@@ -114,10 +117,12 @@ import API from '../api'
 
 <style>
 
+/*
   :root {
     --main-colour: blue;
     --secondary-colour: orange
   }
+*/
 
  .addedNames {
      height: 200px;
@@ -147,6 +152,10 @@ import API from '../api'
  h1 {
      font-size: 5vw;
  }
-
 }
+/*
+    body {
+        background-image: url('https://i.ytimg.com/vi/QmZMMTHFIYY/maxresdefault.jpg');
+    }
+    */
 </style>
