@@ -103,6 +103,7 @@ import API from '../api'
                 API.post("calculation", body)
                     .then(response => {
                         this.result = response.data.result;
+                        this.$emit('submit', this.result)
                         this.showResults = true
                     })
                     .catch(e => {
