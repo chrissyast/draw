@@ -1,5 +1,4 @@
 <template>
-    <v-app>
         <div class="hello">
             <form @submit.prevent="addPerson()">
                 <div class="d-inline-flex input-section" style="min-width: 20px">
@@ -33,7 +32,6 @@
                     <b>{{buyer}}</b> will buy for <b>{{result[buyer]}}</b><br>
                 </span>
         </div>
-    </v-app>
 </template>
 
 <script>
@@ -93,19 +91,8 @@ import API from '../api'
                 this.people.splice(index, 1)
             },
             calculate() {
-            this.$emit("calculate")
-            /*
-                const body = {"people": this.people};
-                API.post("calculation", body)
-                    .then(response => {
-                        console.log(response)
-                        this.result = response.data.result;
-                        this.showResults = true
-                    })
-                    .catch(e => {
-                    this.errors.push(e)
-                    })
-            */
+                this.$emit("calculate")
+                this.$emit("gather")
             }
         }
     }

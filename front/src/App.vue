@@ -1,13 +1,10 @@
 <template>
   <div id="app">
     <v-app>
-      <InputSection ref="input" v-on:foo="bar" v-on:calculate="calculate"/>
+      <InputSection ref="input" v-on:foo="bar" v-on:calculate="calculate" v-on:gather="toggleGather"/>
       <div class="main container">
         <transition name="fade" mode="out-in">
           <div v-if="!drawFinished" key="foo">
-            <div class="container" v-if="!drawFinished">
-              <v-btn @click="toggleGather">{{ gatherText }}</v-btn>
-            </div>
             <div
               v-if="!drawFinished"
               class="cardStack container"
@@ -20,7 +17,7 @@
               />
             </div>
           </div>
-          <div v-if="drawFinished" key="bar">{{ drawResult }}</div>
+          <div v-if="drawFinished" key="bar">{{ drawResult }}</div> <-- TODO make resultsection component -->
         </transition>
       </div>
     </v-app>
@@ -75,8 +72,6 @@ export default {
         const body = {"people": this.$refs.input.people};
         API.post("calculation", body)
           .then(response => {
-            console.log(response)
-            debugger;
             this.drawResult = response.data.result;
             this.showResults = true
         })
