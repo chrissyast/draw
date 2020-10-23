@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <InputSection ref="input" v-on:foo="bar" v-on:calculate="calculate" v-on:gather="toggleGather"/>
+      <InputSection ref="input" :names="names" v-on:add="add" v-on:calculate="calculate" v-on:gather="toggleGather"/>
       <div class="main container">
         <transition name="fade" mode="out-in">
           <div v-if="!drawFinished" key="foo">
@@ -13,11 +13,12 @@
               <CardStack
                 :gatherStatus="gatherStatus"
                 :names="names"
+                v-on:remove="remove"
                 ref="stack"
               />
             </div>
           </div>
-          <div v-if="drawFinished" key="bar">{{ drawResult }}</div> <-- TODO make resultsection component -->
+          <div v-if="drawFinished" key="bar">{{ drawResult }}</div> <!-- TODO make resultsection component -->
         </transition>
       </div>
     </v-app>
@@ -69,7 +70,7 @@ export default {
       }
     },
     calculate() {
-        const body = {"people": this.$refs.input.people};
+        const body = {"people": this.names};
         API.post("calculation", body)
           .then(response => {
             this.drawResult = response.data.result;
@@ -103,18 +104,20 @@ export default {
     showSummary() {
       this.showSummary;
     },
-    bar(event) {
+    add(event) {
       this.showValidation = false;
       if (event !== '' && !this.names.includes(event.toString())){
             this.names.push(event.toString());
             // TODO make this into a prop
             this.$refs.input.person = '';
-            this.$refs.input.people.push(event.toString())
             this.showResults = false;
       }
       if (this.names.includes(event.toString())){
         this.showValidation = true;
       }
+    },
+    remove(index) {
+      this.names.splice(index, 1)
     }
   },
   computed: {

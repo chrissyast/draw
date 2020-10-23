@@ -3,45 +3,26 @@
             <form @submit.prevent="addPerson()">
                 <div class="d-inline-flex input-section" style="min-width: 20px">
                     <v-text-field class="input" outlined placeholder="Enter a name here" v-model="person" style="min-width: 20vw; min-height:50px; height:inherit" hide-details/>
-                    <v-btn class="submit-button" v-bind="props()" v-on:click="calculate" :disabled="this.people.length < 3" style=" height:inherit">Let's buy some gifts!</v-btn>
+                    <v-btn class="submit-button" v-bind="props()" v-on:click="calculate" :disabled="this.$attrs.names.length < 3" style=" height:inherit">Let's buy some gifts!</v-btn>
                 </div>
             </form>
             <p v-if="showValidation" class="warningMessage">
                 That name already exists
             </p>
-    <!--        TODO this should probably be its own component-->
-        <!--
-            <div class="d-flex justify-center flex-wrap ma-2 pa-2">
-                <v-card v-for="(person, index) in people"
-                        :key="index"
-                        class="addedNames ma-2"
-                        shaped
-                        elevation="8"
-                >
+          <!--
                 <v-system-bar v-bind:color="colour(index) + ' lighten-' + (index % 6)">
-                    <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
-      -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson(index)" align="right"/>
                 </v-system-bar>
-                    <h1 style="padding: 0px 8px">{{person}}</h1>
-                    <br>
-                </v-card>
-            </div>
+
         -->
-            <br>
-                <span v-if="showResults" v-for="(buyer, index) in result" :key="index">
-                    <b>{{buyer}}</b> will buy for <b>{{result[buyer]}}</b><br>
-                </span>
         </div>
 </template>
 
 <script>
-import API from '../api'
     export default {
         name: "InputSection",
         data() {
             return {
               person: '',
-              people: [],
               errors: [],
               result: [],
               showValidation: false,
@@ -84,11 +65,7 @@ import API from '../api'
                 else return this.colours['--main-colour']
             },
             addPerson() {
-                this.$emit("foo", this.person)
-            },
-            removePerson(index) {
-                this.showResults = false
-                this.people.splice(index, 1)
+                this.$emit("add", this.person)
             },
             calculate() {
                 this.$emit("calculate")
@@ -101,14 +78,6 @@ import API from '../api'
 </script>
 
 <style>
-
-/*
-  :root {
-    --main-colour: blue;
-    --secondary-colour: orange
-  }
-*/
-
 
  .input-section {
      width: 66%;
@@ -135,9 +104,5 @@ import API from '../api'
      font-size: 5vw;
  }
 }
-/*
-    body {
-        background-image: url('https://i.ytimg.com/vi/QmZMMTHFIYY/maxresdefault.jpg');
-    }
-    */
+
 </style>

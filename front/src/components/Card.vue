@@ -1,8 +1,17 @@
 
 <template>
-    <div class="card" :class="cardClass" :style="cardStyle">
+    <v-card class="card ma"
+            :class="cardClass"
+            :style="cardStyle"
+            shaped
+            elevation="8"
+    >
+        <v-system-bar>
+            <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
+            -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson()" align="right"/>
+        </v-system-bar>
         <h3 class="cardTitle">{{ name }}</h3>
-    </div>
+    </v-card>
 </template>
 
         <!--
@@ -54,7 +63,11 @@ export default {
     gatherStatus: String,
     selectedOrder: Number,
   },
-  methods: {},
+  methods: {
+    removePerson() {
+        this.$emit("remove", this.$attrs.index)
+    }
+  },
   computed: {
     cardClass() {
       return this.gatherStatus + (this.selected ? " selected" : "");
@@ -80,8 +93,8 @@ $cardHeight: 100px;
   border-radius: 100px;
   background-color: red;
   transition: transform $gathering-time, opacity $gathering-time,
-    top $gathering-time;
-  position: absolute;
+    top $gathering-time !important;
+  position: absolute !important;
 
 
 

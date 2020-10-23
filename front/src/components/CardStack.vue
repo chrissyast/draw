@@ -3,7 +3,9 @@
         <div class="cards" :class="gatherStatus">
             <card
                     v-for="(name, index) in names"
+                    v-on:remove="remove"
                     :key="name"
+                    :index="index"
                     :gatherStatus="gatherStatus"
                     :name="name"
                     ref="cards"
@@ -38,6 +40,9 @@ export default {
       card.selected = true;
       card.selectedOrder = index;
     },
+    remove(index) {
+        this.$emit("remove", index)
+    }
   },
 };
 </script>
