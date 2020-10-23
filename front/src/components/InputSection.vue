@@ -11,6 +11,7 @@
                 That name already exists
             </p>
     <!--        TODO this should probably be its own component-->
+        <!--
             <div class="d-flex justify-center flex-wrap ma-2 pa-2">
                 <v-card v-for="(person, index) in people"
                         :key="index"
@@ -26,6 +27,7 @@
                     <br>
                 </v-card>
             </div>
+        -->
             <br>
                 <span v-if="showResults" v-for="(buyer, index) in result" :key="index">
                     <b>{{buyer}}</b> will buy for <b>{{result[buyer]}}</b><br>
@@ -84,30 +86,26 @@ import API from '../api'
                 else return this.colours['--main-colour']
             },
             addPerson() {
-                this.showValidation = false;
-                if (this.person !== '' && !this.people.includes(this.person.toString())){
-                    this.people.push(this.person.toString());
-                    this.person = '';
-                    this.showResults = false;
-                }
-                if (this.people.includes(this.person.toString())){
-                    this.showValidation = true;
-                }
+                this.$emit("foo", this.person)
             },
             removePerson(index) {
                 this.showResults = false
                 this.people.splice(index, 1)
             },
             calculate() {
+            this.$emit("calculate")
+            /*
                 const body = {"people": this.people};
                 API.post("calculation", body)
                     .then(response => {
+                        console.log(response)
                         this.result = response.data.result;
                         this.showResults = true
                     })
                     .catch(e => {
                     this.errors.push(e)
                     })
+            */
             }
         }
     }
@@ -124,10 +122,7 @@ import API from '../api'
   }
 */
 
- .addedNames {
-     height: 200px;
-     width: 200px;
- }
+
  .input-section {
      width: 66%;
      margin: auto
