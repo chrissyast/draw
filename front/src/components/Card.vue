@@ -61,7 +61,6 @@ export default {
   props: {
     name: "",
     gatherStatus: String,
-    selectedOrder: Number,
   },
   methods: {
     removePerson() {

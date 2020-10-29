@@ -1,5 +1,8 @@
 <template>
     <div class="animationSpace" :class="gatherStatus">
+      <div class="buyerName">
+        <h2 v-if="selectedBuyer != ''">{{selectedBuyer}} will buy for...</h2>
+      </div>
         <div class="cards" :class="gatherStatus">
             <card
                     v-for="(name, index) in names"
@@ -30,11 +33,15 @@ export default {
     names: Array,
     gatherStatus: String,
   },
-
+  data: function () {
+    return {
+    selectedBuyer: ''
+  }},
   components: { Card },
   methods: {
     selectCard(buyer, recipient, index) {
       console.log(`${buyer} will buy for ${recipient}`);
+      this.selectedBuyer = buyer;
       var recipientIndex = this.names.indexOf(recipient);
       var card = this.$refs.cards[recipientIndex];
       card.selected = true;

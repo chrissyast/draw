@@ -3,7 +3,12 @@
             <form @submit.prevent="addPerson()">
                 <div class="d-inline-flex input-section" style="min-width: 20px">
                     <v-text-field class="input" outlined placeholder="Enter a name here" v-model="person" style="min-width: 20vw; min-height:50px; height:inherit" hide-details/>
-                    <v-btn class="submit-button" v-bind="props()" v-on:click="calculate" :disabled="this.$attrs.names.length < 3" style=" height:inherit">Let's buy some gifts!</v-btn>
+                    <v-btn class="submit-button"
+                           v-bind="props()"
+                           v-on:click="calculate"
+                           :disabled="this.$attrs.names.length < 3 || drawInProgress"
+                           style=" height:inherit">Let's buy some gifts!
+                    </v-btn>
                 </div>
             </form>
           <div style="min-height: 25px">

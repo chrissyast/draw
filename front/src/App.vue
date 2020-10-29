@@ -4,6 +4,7 @@
       <InputSection ref="input"
                     :names="names"
                     :showValidation="showValidation"
+                    v-if="!drawInProgress"
                     v-on:add="add"
                     v-on:calculate="calculate"
                     v-on:gather="toggleGather"/>
@@ -11,7 +12,6 @@
         <transition name="fade" mode="out-in">
           <div v-if="!drawFinished" key="foo">
             <div
-              v-if="!drawFinished"
               class="cardStack container"
               style="height: 80vh; position: relative"
             >
@@ -43,6 +43,7 @@ export default {
       names: [],
       gatherStatus: "ungathered",
       showValidation: false,
+      drawInProgress: false,
       drawFinished: false,
       displaySummary: false,
       timeouts: [],
@@ -61,6 +62,7 @@ export default {
   },
   methods: {
     toggleGather() {
+      this.drawInProgress = true;
       if (this.gatherStatus === "ungathered") {
         this.gatherStatus = "gathering";
         var animationTime =
@@ -103,6 +105,7 @@ export default {
         setTimeout(() => {
           console.log("draw finished");
           this.drawFinished = true;
+          this.drawInProgress = false;
         }, delay * i + 1000)
       );
     },
