@@ -4,13 +4,13 @@
       <InputSection ref="input"
                     :names="names"
                     :showValidation="showValidation"
-                    v-if="!drawInProgress"
+                    v-if="!(drawInProgress || drawFinished)"
                     v-on:add="add"
                     v-on:calculate="calculate"
                     v-on:gather="toggleGather"/>
       <div class="main container">
         <transition name="fade" mode="out-in">
-          <div v-if="!drawFinished" key="foo">
+          <div v-if="!drawFinished">
             <div
               class="cardStack container"
               style="height: 80vh; position: relative"
@@ -23,7 +23,10 @@
               />
             </div>
           </div>
-          <div v-if="drawFinished" key="bar">{{ drawResult }}</div> <!-- TODO make resultsection component -->
+          <result-section
+              v-if="drawFinished"
+              :results="drawResult">
+          </result-section>
         </transition>
       </div>
     </v-app>
@@ -34,6 +37,7 @@
 import InputSection from "./components/InputSection.vue";
 import Card from "./components/Card.vue";
 import CardStack from "./components/CardStack.vue";
+import ResultSection from "@/components/ResultSection";
 import API from "./api.js";
 
 export default {
@@ -51,7 +55,7 @@ export default {
     };
   },
   refs: { stack: CardStack, input: InputSection },
-  components: { Card, CardStack, InputSection },
+  components: { Card, CardStack, InputSection, ResultSection },
   beforeCreate: function () {
     document.body.style = "overflow: visible";
     document.documentElement.style.setProperty(
