@@ -6,14 +6,11 @@
                     <v-btn class="submit-button" v-bind="props()" v-on:click="calculate" :disabled="this.$attrs.names.length < 3" style=" height:inherit">Let's buy some gifts!</v-btn>
                 </div>
             </form>
-            <p v-if="showValidation" class="warningMessage">
-                That name already exists
+          <div style="min-height: 25px">
+            <p class="warningMessage" v-show="showValidation">
+              That name already exists
             </p>
-          <!--
-                <v-system-bar v-bind:color="colour(index) + ' lighten-' + (index % 6)">
-                </v-system-bar>
-
-        -->
+          </div>
         </div>
 </template>
 
@@ -25,13 +22,15 @@
               person: '',
               errors: [],
               result: [],
-              showValidation: false,
               showResults: false,
               colours: {
                   "--main-colour":"blue",
                   "--secondary-colour":"orange"
               }
             }
+        },
+        props: {
+          showValidation: Boolean
         },
         computed: {
 

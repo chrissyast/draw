@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     cardClass() {
-      return this.gatherStatus + (this.selected ? " selected" : "");
+      return this.selected ? "selected" : this.gatherStatus;
     },
     cardStyle() {
       return this.selected ? `z-index: ${this.selectedOrder};` : "";
@@ -86,8 +86,8 @@ $cardHeight: 100px;
 
 
 .card {
-  width: 50%;
-  left: 25%;
+  width: 25%;
+  left: 37.5%;  // needs to be (50% - half of width)
   border-style: solid;
   height: $cardHeight;
   border-radius: 100px;
@@ -107,15 +107,17 @@ $cardHeight: 100px;
 
   &.selected {
     visibility: visible;
-    transform: scale(0.6);
+    transform: scale(0.8);
     top: -25%;
   }
 }
 @for $i from 1 through $maximum-ungathered-cards {
-  .card:not(.gathered):nth-child(#{$i}) {
+  .card:not(.gathered):not(.selected):nth-child(#{$i}) {
     $index: $i - 1;
+    $row: floor($index / 3);
     z-index: $maximum-ungathered-cards - $i;
-    transform: translateY($cardHeight * $index);
+    transform:  translateY($cardHeight * $row) translateX(100% * (($index % 3) - 1));
+
 
     &.gathering {
       transform: scale(1 - ($i/10)) translateY(((50px * $i)));

@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <v-app>
-      <InputSection ref="input" :names="names" v-on:add="add" v-on:calculate="calculate" v-on:gather="toggleGather"/>
+      <InputSection ref="input"
+                    :names="names"
+                    :showValidation="showValidation"
+                    v-on:add="add"
+                    v-on:calculate="calculate"
+                    v-on:gather="toggleGather"/>
       <div class="main container">
         <transition name="fade" mode="out-in">
           <div v-if="!drawFinished" key="foo">
@@ -106,15 +111,19 @@ export default {
     },
     add(event) {
       this.showValidation = false;
-      if (event !== '' && !this.names.includes(event.toString())){
+      if (event == '') {
+
+      }
+      else if (this.names.includes(event.toString())){
+        this.showValidation = true;
+      }
+      else {
             this.names.push(event.toString());
             // TODO make this into a prop
             this.$refs.input.person = '';
             this.showResults = false;
       }
-      if (this.names.includes(event.toString())){
-        this.showValidation = true;
-      }
+
     },
     remove(index) {
       this.names.splice(index, 1)
