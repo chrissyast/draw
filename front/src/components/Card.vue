@@ -14,42 +14,6 @@
     </v-card>
 </template>
 
-        <!--
-        <template>
-            <v-card class="card ma-2"
-                    :class="cardClass"
-                    :style="cardStyle"
-                    shaped
-                    elevation="8">
-                 TODO implement color
-         <v-system-bar v-bind:color="colour(index) + ' lighten-' + (index % 6)">
-        <v-system-bar>
-            <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
-      -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson(index)" align="right"/>
-        </v-system-bar>
-        <h1 style="padding: 0px 8px">{{name}}</h1>
-        <br>
-    </v-card>
-</template>
-        -->
-<!--
-            <div class="d-flex justify-center flex-wrap ma-2 pa-2">
-                <v-card v-for="(person, index) in people"
-                        :key="index"
-                        class="addedNames ma-2"
-                        shaped
-                        elevation="8"
-                >
-                <v-system-bar v-bind:color="colour(index) + ' lighten-' + (index % 6)">
-                    <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
-      -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson(index)" align="right"/>
-                </v-system-bar>
-                    <h1 style="padding: 0px 8px">{{person}}</h1>
-                    <br>
-                </v-card>
-            </div>
--->
-
 <script>
 export default {
   name: "Card",
@@ -89,7 +53,6 @@ $cardHeight: 100px;
   left: 37.5%;  // needs to be (50% - half of width)
   border-style: solid;
   height: $cardHeight;
-  border-radius: 100px;
   background-color: red;
   transition: transform $gathering-time, opacity $gathering-time,
     top $gathering-time !important;
@@ -100,8 +63,6 @@ $cardHeight: 100px;
   &.gathered {
     transform: scale(0.2);
     top: 50%;
-    //visibility: visible;
-    //transition: none;
   }
 
   &.selected {
