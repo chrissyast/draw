@@ -14,11 +14,11 @@
                     ref="cards"
             />
         </div>
-        <div class="hat" v-if="this.gatherStatus !== 'ungathered'">
-            <div class="container">
-                <img class="hat-part back" src="../assets/whole hat.png" />
-                <img class="hat-part front" src="../assets/hatfront.png" />
-            </div>
+        <div class="hat" v-show="this.gatherStatus !== 'ungathered'">
+          <div class="container">
+            <img class="hat-part back" src="../assets/whole hat.png" />
+            <img class="hat-part front" src="../assets/hatfront.png" />
+          </div>
         </div>
     </div>
 </template>
