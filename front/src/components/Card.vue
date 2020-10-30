@@ -1,0 +1,98 @@
+
+<template>
+    <v-card class="card ma"
+            :class="cardClass"
+            :style="cardStyle"
+            shaped
+            elevation="8"
+    >
+        <v-system-bar v-bind:color="colour(this.$attrs.index) + ' lighten-' + (this.$attrs.index % 3)">
+            <img v-if="this.gatherStatus=='ungathered'" src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
+            -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson()" align="right"/>
+        </v-system-bar>
+        <h3 class="cardTitle">{{ name }}</h3>
+    </v-card>
+</template>
+
+<script>
+export default {
+  name: "Card",
+  data: function () {
+    return {
+      selected: false,
+      colours: {
+        "--main-colour":"blue",
+        "--secondary-colour":"orange"
+      }
+    };
+  },
+  props: {
+    name: "",
+    gatherStatus: String,
+  },
+  methods: {
+    removePerson() {
+      this.$emit("remove", this.$attrs.index)
+    },
+    colour(index = 0) {
+      if (!(Math.floor(index / 3) % 2))
+        return this.colours['--secondary-colour']
+      else return this.colours['--main-colour']
+    }
+  },
+  computed: {
+    cardClass() {
+      return this.selected ? "selected" : this.gatherStatus;
+    },
+    cardStyle() {
+      return this.selected ? `z-index: ${this.selectedOrder};` : "";
+    },
+  },
+};
+</script>
+
+        <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+@import "../styles/variables.scss";
+$cardHeight: 100px;
+
+
+.card {
+  width: 25%;
+  left: 37.5%;  // needs to be (50% - half of width)
+  border-style: solid;
+  height: $cardHeight;
+  background-color: red;
+  transition: transform $gathering-time, opacity $gathering-time,
+    top $gathering-time !important;
+  position: absolute !important;
+
+
+
+  &.gathered {
+    transform: scale(0.2);
+    top: 50%;
+  }
+
+  &.selected {
+    visibility: visible;
+    top: -25%;
+  }
+}
+@for $i from 1 through $maximum-ungathered-cards {
+  .card:not(.gathered):not(.selected):nth-child(#{$i}) {
+    $index: $i - 1;
+    $row: floor($index / 3);
+    z-index: $maximum-ungathered-cards - $i;
+    transform:  translateY($cardHeight * $row) translateX(100% * (($index % 3) - 1));
+
+
+    &.gathering {
+      transform: scale(1 - ($i/10)) translateY(((50px * $i)));
+      @if ($i) > $maximum-gathered-cards {
+        opacity: 0;
+      }
+    }
+  }
+}
+</style>

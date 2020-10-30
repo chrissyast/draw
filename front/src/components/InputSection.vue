@@ -1,50 +1,32 @@
 <template>
-    <v-app>
         <div class="hello">
             <form @submit.prevent="addPerson()">
                 <div class="d-inline-flex input-section" style="min-width: 20px">
-                    <v-text-field class="input" outlined placeholder="Enter a name here" v-model="person" style="min-width: 20vw; min-height:50px; height:inherit" hide-details/>
-                    <v-btn class="submit-button" v-bind="props()" v-on:click="calculate" :disabled="this.people.length < 3" style=" height:inherit">Let's buy some gifts!</v-btn>
+                    <v-text-field class="input" outlined :placeholder="placeholderText" v-model="person" style="min-width: 20vw; min-height:50px; height:inherit" hide-details/>
+                    <v-btn class="submit-button"
+                           v-bind="props()"
+                           v-on:click="buttonClick"
+                           :disabled="this.names.length < 3"
+                           style=" height:inherit">{{ buttonText }}
+                    </v-btn>
                 </div>
             </form>
-            <p v-if="showValidation" class="warningMessage">
-                That name already exists
+          <div style="min-height: 25px">
+            <p class="warningMessage" v-show="showValidation">
+              That name already exists
             </p>
-    <!--        TODO this should probably be its own component-->
-            <div class="d-flex justify-center flex-wrap ma-2 pa-2">
-                <v-card v-for="(person, index) in people"
-                        :key="index"
-                        class="addedNames ma-2"
-                        shaped
-                        elevation="8"
-                >
-                <v-system-bar v-bind:color="colour(index) + ' lighten-' + (index % 6)">
-                    <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
-      -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson(index)" align="right"/>
-                </v-system-bar>
-                    <h1 style="padding: 0px 8px">{{person}}</h1>
-                    <br>
-                </v-card>
-            </div>
-            <br>
-                <span v-if="showResults" v-for="(buyer, index) in result" :key="index">
-                    <b>{{buyer}}</b> will buy for <b>{{result[buyer]}}</b><br>
-                </span>
+          </div>
         </div>
-    </v-app>
 </template>
 
 <script>
-import API from '../api'
     export default {
         name: "InputSection",
         data() {
             return {
               person: '',
-              people: [],
               errors: [],
               result: [],
-              showValidation: false,
               showResults: false,
               colours: {
                   "--main-colour":"blue",
@@ -52,8 +34,29 @@ import API from '../api'
               }
             }
         },
+        props: {
+          showValidation: Boolean,
+          names: {}
+        },
         computed: {
-
+          buttonText() {
+            return "Let's buy some gifts!"
+          },
+          placeholderText() {
+            switch (this.names.length) {
+              case 0:
+                return "Enter the first name to start"
+              case 1:
+                return "Good job! Now enter another"
+              case 2:
+                return "One more and we can get started..."
+              case 3:
+                return "Nice one! Either start the draw or keep adding people"
+              case 4:
+                return "Wow, you do have a lot of friends! You don't need me any more..."
+            }
+              return ""
+          }
 
         },
         methods: {
@@ -84,30 +87,20 @@ import API from '../api'
                 else return this.colours['--main-colour']
             },
             addPerson() {
-                this.showValidation = false;
-                if (this.person !== '' && !this.people.includes(this.person.toString())){
-                    this.people.push(this.person.toString());
-                    this.person = '';
-                    this.showResults = false;
-                }
-                if (this.people.includes(this.person.toString())){
-                    this.showValidation = true;
-                }
+                this.$emit("add", this.person)
             },
-            removePerson(index) {
-                this.showResults = false
-                this.people.splice(index, 1)
+            buttonClick() {
+              if (this.drawInProgress) {
+                this.cancel()
+              } else {
+                this.calculate()
+              }
             },
             calculate() {
-                const body = {"people": this.people};
-                API.post("calculation", body)
-                    .then(response => {
-                        this.result = response.data.result;
-                        this.showResults = true
-                    })
-                    .catch(e => {
-                    this.errors.push(e)
-                    })
+                this.$emit("calculate")
+            },
+            cancel() {
+              this.$emit("cancel")
             }
         }
     }
@@ -117,17 +110,6 @@ import API from '../api'
 
 <style>
 
-/*
-  :root {
-    --main-colour: blue;
-    --secondary-colour: orange
-  }
-*/
-
- .addedNames {
-     height: 200px;
-     width: 200px;
- }
  .input-section {
      width: 66%;
      margin: auto
@@ -153,9 +135,5 @@ import API from '../api'
      font-size: 5vw;
  }
 }
-/*
-    body {
-        background-image: url('https://i.ytimg.com/vi/QmZMMTHFIYY/maxresdefault.jpg');
-    }
-    */
+
 </style>
