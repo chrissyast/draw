@@ -6,8 +6,8 @@
             shaped
             elevation="8"
     >
-        <v-system-bar>
-            <img src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
+        <v-system-bar v-bind:color="colour(this.$attrs.index) + ' lighten-' + (this.$attrs.index % 3)">
+            <img v-if="this.gatherStatus=='ungathered'" src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
             -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson()" align="right"/>
         </v-system-bar>
         <h3 class="cardTitle">{{ name }}</h3>
@@ -20,6 +20,10 @@ export default {
   data: function () {
     return {
       selected: false,
+      colours: {
+        "--main-colour":"blue",
+        "--secondary-colour":"orange"
+      }
     };
   },
   props: {
@@ -28,7 +32,12 @@ export default {
   },
   methods: {
     removePerson() {
-        this.$emit("remove", this.$attrs.index)
+      this.$emit("remove", this.$attrs.index)
+    },
+    colour(index = 0) {
+      if (!(Math.floor(index / 3) % 2))
+        return this.colours['--secondary-colour']
+      else return this.colours['--main-colour']
     }
   },
   computed: {
@@ -67,7 +76,6 @@ $cardHeight: 100px;
 
   &.selected {
     visibility: visible;
-    transform: scale(0.8);
     top: -25%;
   }
 }
