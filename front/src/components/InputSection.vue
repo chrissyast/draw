@@ -2,12 +2,12 @@
         <div class="hello">
             <form @submit.prevent="addPerson()">
                 <div class="d-inline-flex input-section" style="min-width: 20px">
-                    <v-text-field class="input" outlined placeholder="Enter a name here" v-model="person" style="min-width: 20vw; min-height:50px; height:inherit" hide-details/>
+                    <v-text-field class="input" outlined :placeholder="placeholderText" v-model="person" style="min-width: 20vw; min-height:50px; height:inherit" hide-details/>
                     <v-btn class="submit-button"
                            v-bind="props()"
-                           v-on:click="calculate"
-                           :disabled="this.$attrs.names.length < 3 || drawInProgress"
-                           style=" height:inherit">Let's buy some gifts!
+                           v-on:click="buttonClick"
+                           :disabled="this.names.length < 3"
+                           style=" height:inherit">{{ buttonText }}
                     </v-btn>
                 </div>
             </form>
@@ -38,7 +38,24 @@
           showValidation: Boolean
         },
         computed: {
-
+          buttonText() {
+            return "Let's buy some gifts!"
+          },
+          placeholderText() {
+            switch (this.names.length) {
+              case 0:
+                return "Enter the first name to start"
+              case 1:
+                return "Good job! Now enter another"
+              case 2:
+                return "One more and we can get started..."
+              case 3:
+                return "Nice one! Either start the draw or keep adding people"
+              case 4:
+                return "Wow, you do have a lot of friends! You don't need me any more..."
+            }
+              return ""
+          }
 
         },
         methods: {
@@ -71,9 +88,18 @@
             addPerson() {
                 this.$emit("add", this.person)
             },
+            buttonClick() {
+              if (this.drawInProgress) {
+                this.cancel()
+              } else {
+                this.calculate()
+              }
+            },
             calculate() {
                 this.$emit("calculate")
-                this.$emit("gather")
+            },
+            cancel() {
+              this.$emit("cancel")
             }
         }
     }
