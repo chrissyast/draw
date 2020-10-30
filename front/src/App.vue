@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <v-app>
-      <InputSection ref="input"
-                    :names="names"
-                    :showValidation="showValidation"
-                    v-if="!(drawInProgress || drawFinished)"
-                    v-on:add="add"
-                    v-on:calculate="calculate"
-                    v-on:gather="toggleGather"/>
       <div class="main container">
+        <InputSection ref="input"
+                      :names="names"
+                      :showValidation="showValidation"
+                      :drawInProgress="drawInProgress"
+                      v-if="!(drawInProgress || drawFinished)"
+                      v-on:add="add"
+                      v-on:calculate="calculate"
+                      v-on:cancel="cancel"
+        />
+        <v-btn class="submit-button" style="width:25%" v-if="drawInProgress" @click="cancel">Cancel</v-btn>
         <transition name="fade" mode="out-in">
           <div v-if="!drawFinished">
             <div
@@ -66,26 +69,40 @@ export default {
   },
   methods: {
     toggleGather() {
-      this.drawInProgress = true;
+      this.drawInProgress = !this.drawInProgress;
       if (this.gatherStatus === "ungathered") {
         this.gatherStatus = "gathering";
-        var animationTime =
-          parseInt(this.$style.gatheringTime.split("ms")[0], 10) +
-          parseInt(this.$style.putAwayTime.split("ms")[0], 10);
-        this.timeouts.push(setTimeout(this.startDraw, animationTime));
       } else {
         this.gatherStatus = "ungathered";
-        for (var timeout in this.timeouts) {
-          clearTimeout(this.timeouts[timeout]);
-        }
+        this.$refs.stack.$refs.cards.forEach(c => c.selected = false)
       }
     },
+    animateDraw() {
+      var animationTime =
+          parseInt(this.$style.gatheringTime.split("ms")[0], 10) +
+          parseInt(this.$style.putAwayTime.split("ms")[0], 10);
+          this.timeouts.push(setTimeout(this.startDraw, animationTime));
+    },
+    cancel() {
+      this.toggleGather();
+      for (var timeout in this.timeouts) {
+        clearTimeout(this.timeouts[timeout]);
+      }
+      this.$refs.stack.selectedBuyer = '';
+    },
+    colour(index = 0) {
+      if (!(Math.floor(index / 6) % 2))
+        return this.colours['--secondary-colour']
+      else return this.colours['--main-colour']
+    },
     calculate() {
+        this.toggleGather();
         const body = {"people": this.names};
         API.post("calculation", body)
           .then(response => {
             this.drawResult = response.data.result;
             this.showResults = true
+            this.animateDraw();
         })
         .catch(e => {
         this.errors.push(e)
@@ -107,14 +124,10 @@ export default {
       }
       this.timeouts.push(
         setTimeout(() => {
-          console.log("draw finished");
           this.drawFinished = true;
           this.drawInProgress = false;
         }, delay * i + 1000)
       );
-    },
-    showSummary() {
-      this.showSummary;
     },
     add(event) {
       this.showValidation = false;
@@ -130,16 +143,13 @@ export default {
             this.$refs.input.person = '';
             this.showResults = false;
       }
-
     },
     remove(index) {
       this.names.splice(index, 1)
     }
   },
   computed: {
-    gatherText() {
-      return this.gatherStatus === "ungathered" ? "gather" : "ungather";
-    },
+
   },
 };
 </script>
