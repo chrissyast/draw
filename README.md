@@ -12,7 +12,18 @@ This project uses a Vue frontend and a Rails API backend, in the same repository
  
  The 'front' directory is pushed to the santadraw remote and the 'back' directory is pushed to santadraw_back. There are also staging versions of both.
  
- To ease deployment, I created a series of .zshrc commands 
+ To ease deployment, I created a series of .zshrc commands for Mac.
+ Unfortunately on PC, these kind of 'nested' commands don't work in the terminal ([see here](https://stackoverflow.com/a/28904116/8940624)), so has to be run in two separate commands
+ 
+ 
+ 
+ Before running these, you will need to install the Heroku CLI and also configure the following remotes in git.  
+ 
+ `git remote add heroku_back https://git.heroku.com/santadrawback.git`
+ `git remote add heroku_front https://git.heroku.com/santadraw.git`
+ `git remote add heroku_back_staging https://git.heroku.com/santadrawback-staging.git`
+ `git remote add heroku_front_staging https://git.heroku.com/santadraw-staging.git`
+ 
  
  ```
 # Custom branches
