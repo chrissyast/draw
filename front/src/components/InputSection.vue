@@ -35,7 +35,8 @@
             }
         },
         props: {
-          showValidation: Boolean
+          showValidation: Boolean,
+          names: {}
         },
         computed: {
           buttonText() {

@@ -40,7 +40,6 @@ export default {
   components: { Card },
   methods: {
     selectCard(buyer, recipient, index) {
-      console.log(`${buyer} will buy for ${recipient}`);
       this.selectedBuyer = buyer;
       var recipientIndex = this.names.indexOf(recipient);
       var card = this.$refs.cards[recipientIndex];
