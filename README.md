@@ -1,4 +1,4 @@
-Public site - santadraw.herokuapp.com
+Public site - http://santadraw.herokuapp.com
 
 # README
 
