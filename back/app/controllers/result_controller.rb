@@ -1,9 +1,18 @@
-class HomeController < ApplicationController
-#skip_before_action :verify_authenticity_token
+class ResultController < ApplicationController
+skip_before_action :verify_authenticity_token
   def calculation
     people = params["people"]
     result = make_draw(people)
-    render :json => {result: result}
+    result_entry = Result.new({result: result})
+    result_entry.save
+
+    render :json => {result: result, id: result_entry.id}
+  end
+
+  def load
+    id = params["id"]
+    result = Result.find_by_id(id)
+    render :json => {result: result.result}
   end
   
   def make_draw(people)
