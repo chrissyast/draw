@@ -22,7 +22,7 @@ export default {
   }
   },
   created: function() {
-    api.get(`results/${this.$route.params.id}`)
+    api.get(`results?id=${this.$route.params.id}`)
         .then(r => {
           this.result = r.data.result;
           this.names = Object.keys(r.data.result)
