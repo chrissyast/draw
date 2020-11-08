@@ -80,8 +80,6 @@
                 return props
             },
             colour(index = 0) {
-                // TODO implement row count from https://stackoverflow.com/a/49090306/8940624 so that you always get a new colour on wrap.
-                // TODO reverse fading direct for alternate colour (i.e. go from lighter to normal)
                if (!(Math.floor(index / 6) % 2))
                 return this.colours['--secondary-colour']
                 else return this.colours['--main-colour']
@@ -116,9 +114,9 @@
  }
 
  @media only screen and (max-width: 800px) {
-  /*   TODO implement sass
-       TODO try to understand https://stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css to be able to implement a max height of [80% of (vh - 150px)] but still keep width relative
-     */
+
+       /*TODO try to understand https://stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css to be able to implement a max height of [80% of (vh - 150px)] but still keep width relative*/
+
   .addedNames {
       height: 25vw;
       width: 25vw;
