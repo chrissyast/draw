@@ -18,7 +18,8 @@ export default {
   data: function() {
     return {
     result: {},
-    names: []
+    names: [],
+    errors: []
   }
   },
   created: function() {
@@ -28,10 +29,12 @@ export default {
           this.names = Object.keys(r.data.result)
           setTimeout(() => {
             this.$refs.animate.toggleGather()
-            this.$refs.animate.animateDraw()
           }, 1000)
+          setTimeout(() => {
+            this.$refs.animate.pullCardsFromHat()
+          }, (2000 + this.$refs.animate.animationTime))
         })
-        .catch(e => console.log(e))
+        .catch(e => this.errors.push(e))
   }
 
 }

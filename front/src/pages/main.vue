@@ -10,6 +10,7 @@
         v-on:calculate="calculate"
         v-on:cancel="cancel"
     />
+    // TODO add loading bar v-if showLoading
     <v-btn class="submit-button" style="width:25%" v-if="drawInProgress" @click="cancel">Cancel</v-btn>
     <animated-draw-section
        ref="animation"
@@ -36,11 +37,11 @@ export default {
   data: function () {
     return {
       names: [],
-   //   gatherStatus: "ungathered",
       showValidation: false,
       drawInProgress: false,
       drawFinished: false,
-      displaySummary: false,
+      calculating: false,
+      showLoading: false,
       timeouts: [],
       drawResult: {},
       drawId: undefined,
@@ -61,7 +62,7 @@ export default {
       this.$refs.animation.toggleGather()
     },
     animateDraw() {
-      this.$refs.animation.animateDraw()
+      this.$refs.animation.pullCardsFromHat()
     },
     cancel() {
       this.drawInProgress = false;
@@ -75,14 +76,14 @@ export default {
     },
     calculate() {
       this.drawInProgress = true;
+      this.calculating = true;
       this.toggleGather();
       const body = {"people": this.names};
       API.post("calculation", body)
           .then(response => {
             this.drawResult = response.data.result;
             this.drawId = response.data.id
-            this.showResults = true
-            this.animateDraw();
+            this.calculating = false;
           })
           .catch(e => {
             this.errors.push(e)
@@ -104,7 +105,6 @@ export default {
         this.names.push(event.toString());
         // TODO make this into a prop
         this.$refs.input.person = '';
-        this.showResults = false;
       }
     },
     remove(index) {
@@ -113,7 +113,23 @@ export default {
   },
   computed: {
 
+
   },
+  mounted() {
+    this.$watch("$refs.animation.gatherStatus", (newValue) => {
+      if ((newValue == 'gathered') && !this.calculating) {
+        setTimeout(() => {this.animateDraw()}, 1250)
+      } else if (newValue == 'gathered') {
+        this.showLoading = true;
+      }
+    })
+    this.$watch("calculating", (newValue) => {
+      if (!newValue && this.$refs.animation.gatherStatus == 'gathered') {
+        this.showLoading = false
+        this.animateDraw()
+      }
+    })
+  }
 };
 </script>
 
