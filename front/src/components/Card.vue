@@ -47,7 +47,7 @@ export default {
     },
     colours() {
         let colours = this.$style.colours.substring(1,this.$style.colours.length-1)
-        colours = colours.split(", ")
+        colours = colours.split(/,\s*/)
         return colours
     }
   },
