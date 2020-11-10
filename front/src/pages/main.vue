@@ -10,7 +10,7 @@
         v-on:calculate="calculate"
         v-on:cancel="cancel"
     />
-    // TODO add loading bar v-if showLoading
+<!--     TODO add loading bar v-if showLoading-->
     <v-btn class="submit-button" style="width:25%" v-if="drawInProgress" @click="cancel">Cancel</v-btn>
     <animated-draw-section
        ref="animation"
