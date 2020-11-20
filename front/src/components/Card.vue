@@ -6,7 +6,7 @@
             shaped
             elevation="8"
     >
-        <v-system-bar v-bind:color="colour(this.$attrs.index) + ' lighten-' + (this.$attrs.index % 3)">
+        <v-system-bar v-bind:color="colour(this.$attrs.index)">
             <img v-if="this.gatherStatus=='ungathered'" src="../assets/images/delete.png" style="background-color: transparent;  filter:  invert(100%);
             -webkit-filter: invert(100%);" height="10" width="10" v-on:click="removePerson()" align="right"/>
         </v-system-bar>
@@ -20,10 +20,7 @@ export default {
   data: function () {
     return {
       selected: false,
-      colours: {
-        "--main-colour":"blue",
-        "--secondary-colour":"orange"
-      }
+      assignedColours: []
     };
   },
   props: {
@@ -35,9 +32,10 @@ export default {
       this.$emit("remove", this.$attrs.index)
     },
     colour(index = 0) {
-      if (!(Math.floor(index / 3) % 2))
-        return this.colours['--secondary-colour']
-      else return this.colours['--main-colour']
+        if (!this.assignedColours[index]) {
+            this.assignedColours[index] = this.colours[Math.floor(Math.random() * this.colours.length)]
+        }
+        return this.assignedColours[index]
     }
   },
   computed: {
@@ -47,11 +45,25 @@ export default {
     cardStyle() {
       return this.selected ? `z-index: ${this.selectedOrder};` : "";
     },
+    colours() {
+        let colours = this.$style.colours.substring(1,this.$style.colours.length-1)
+        colours = colours.split(/,\s*/)
+        return colours
+    }
   },
 };
 </script>
 
         <!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
+<style module lang="scss">
+@import "../styles/colours.scss";
+:export {
+  colours:$cool-colours;
+}
+</style>
+
 <style lang="scss">
 @import "../styles/variables.scss";
 $cardHeight: 100px;

@@ -27,7 +27,6 @@
               person: '',
               errors: [],
               result: [],
-              showResults: false,
               colours: {
                   "--main-colour":"blue",
                   "--secondary-colour":"orange"
@@ -79,10 +78,8 @@
                 props['color'] = this.colour()
                 return props
             },
-            colour(index = 0) {
-               if (!(Math.floor(index / 6) % 2))
-                return this.colours['--secondary-colour']
-                else return this.colours['--main-colour']
+            colour() {
+                return this.colours['--secondary-colour'] // TODO something more interesting with the colour?
             },
             addPerson() {
                 this.$emit("add", this.person)
@@ -117,10 +114,7 @@
 
        /*TODO try to understand https://stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css to be able to implement a max height of [80% of (vh - 150px)] but still keep width relative*/
 
-  .addedNames {
-      height: 25vw;
-      width: 25vw;
-  }
+
  .input-section {
      width: auto;
      padding: 5px;

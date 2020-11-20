@@ -1,10 +1,16 @@
 <template>
   <div>
-    <p v-for="(buyer,recipient) in results">
+    <p style="font-size: 20px" v-for="(buyer,recipient) in results">
       <b>{{buyer}}</b> will buy for <b>{{recipient}}</b>
     </p>
-   <button v-if="showShareButton" v-on:click="shareResults">Share with friends...</button>
-    <p v-if="showShareUrl"><b>{{shareURL}}</b> copied to clipboard! <br>Email function coming soon!<br></p>
+    <div style="padding-bottom: 5px">
+      <v-btn v-if="showShareButton" v-on:click="shareResults">Share with friends...</v-btn>
+    </div>
+    <br>
+    <p v-if="showShareUrl">
+      <b>{{shareURL}}</b> copied to clipboard!
+      <br>Email function coming soon!<br>
+    </p>
   </div>
 </template>
 

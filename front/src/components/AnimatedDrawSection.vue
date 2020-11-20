@@ -38,6 +38,12 @@ export default {
     drawResult: Object,
     drawId: Number
   },
+  computed: {
+    animationTime() {
+      return parseInt(this.$style.gatheringTime.split("ms")[0], 10) +
+          parseInt(this.$style.putAwayTime.split("ms")[0], 10);
+    }
+  },
   methods:{
     remove(index) {
       this.$emit("remove",index)
@@ -49,6 +55,10 @@ export default {
       this.drawInProgress = !this.drawInProgress;
       if (this.gatherStatus === "ungathered") {
         this.gatherStatus = "gathering";
+        const animationTime = this.animationTime;
+        this.timeouts.push(setTimeout(() => {
+          this.gatherStatus = "gathered"
+        }, animationTime))
       } else {
         this.gatherStatus = "ungathered";
         this.$refs.stack.$refs.cards.forEach(c => c.selected = false)
@@ -60,19 +70,11 @@ export default {
       }
       this.$refs.stack.selectedBuyer = '';
     },
-    animateDraw() {
-      var animationTime =
-          parseInt(this.$style.gatheringTime.split("ms")[0], 10) +
-          parseInt(this.$style.putAwayTime.split("ms")[0], 10);
-      this.timeouts.push(setTimeout(this.startDraw, animationTime));
-    },
-    startDraw() {
-      this.gatherStatus = "gathered";
-      var i = 1;
+    pullCardsFromHat() {
+      var i = 0;
       let delay = this.$style.nextCardDelay;
       for (const [buyer, recipient] of Object.entries(this.drawResult)) {
         let index = i;
-
         this.timeouts.push(
             setTimeout(() => {
               this.$refs.stack.selectCard(buyer, recipient, index);
