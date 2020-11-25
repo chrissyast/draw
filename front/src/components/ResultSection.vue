@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p style="font-size: 20px" v-for="(buyer,recipient) in results">
+    <p style="font-size: 20px" v-for="(recipient,buyer) in results">
       <b>{{buyer}}</b> will buy for <b>{{recipient}}</b>
     </p>
     <div style="padding-bottom: 5px">
