@@ -1,6 +1,7 @@
 <template>
     <div class="animationSpace" :class="gatherStatus">
       <div class="buyerName">
+        <h2 v-if="showLoading" class="loading">Please wait, waking up the drawmaster!</h2>
         <h2 v-if="selectedBuyer != ''">{{selectedBuyer}} will buy for...</h2>
       </div>
         <div class="cards" :class="gatherStatus">
@@ -32,6 +33,7 @@ export default {
   props: {
     names: Array,
     gatherStatus: String,
+    showLoading: Boolean
   },
   data: function () {
     return {
@@ -135,6 +137,23 @@ export default {
     transform: scale(0.2);
     top: 40%;
     z-index: 1;
+  }
+}
+
+.loading {
+    animation: fade 1s alternate infinite;
+}
+
+@keyframes fade {
+  0% {
+    opacity:1,
+  }
+  50% {
+
+  }
+  100% {
+    transform: scale(0.9);
+    opacity:0.8,
   }
 }
 </style>

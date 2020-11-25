@@ -7,6 +7,7 @@
       >
         <CardStack
             :gatherStatus="gatherStatus"
+            :showLoading="showLoading"
             :names="names"
             v-on:remove="remove"
             ref="stack"
@@ -36,7 +37,8 @@ export default {
   props: {
     names: Array,
     drawResult: Object,
-    drawId: Number
+    drawId: Number,
+    showLoading: Boolean
   },
   computed: {
     animationTime() {

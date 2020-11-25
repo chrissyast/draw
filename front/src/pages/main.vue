@@ -16,6 +16,7 @@
        ref="animation"
        :names="names"
        :draw-result="drawResult"
+       :showLoading="showLoading"
        :drawId="drawId"
        :drawFinished="drawFinished"
        v-on:remove="remove"
