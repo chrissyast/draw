@@ -64,7 +64,7 @@ http {
     location ~ ^/.*$ {
       set $route /.*;
 
-      try_files $uri.html $uri $uri/ $path;
+      try_files $uri.html $uri $uri/;
 
     }
 
