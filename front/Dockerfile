@@ -1,6 +1,8 @@
 # build stage
 FROM node:lts-alpine as build-stage
-ENV VUE_APP_BACKEND_SERVER=/${_VUE_APP_BACKEND_SERVER}
+ENV VUE_APP_BACKEND_SERVER=${_VUE_APP_BACKEND_SERVER}
+RUN echo "VUE_APP_BACKEND_SERVER"
+RUN echo $VUE_APP_BACKEND_SERVER
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
