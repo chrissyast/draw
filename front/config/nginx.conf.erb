@@ -20,6 +20,11 @@ http {
 
   access_log logs/access.log;
 
+  # handle SNI
+  proxy_ssl_server_name on;
+  # resolver needs to be set because we're using dynamic proxy_pass
+  resolver 8.8.8.8;
+
 
 
   error_log stderr error;
@@ -32,7 +37,7 @@ http {
   #Must read the body in 5 seconds.
   client_body_timeout 5;
 
-server {
+  server {
   listen <%= ENV["PORT"] %>;
   charset UTF-8;
   port_in_redirect off;
