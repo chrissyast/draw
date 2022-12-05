@@ -1,7 +1,7 @@
 <template>
         <div class="hello">
             <form @submit.prevent="addPerson()">
-                <div class="d-inline-flex input-section" style="min-width: 20px; flex-direction:column">
+                <div class="d-inline-flex input-section" style="min-width: 80vw; flex-direction:column">
                     <v-text-field class="input" outlined :placeholder="placeholderText" v-model="person" style="min-width: 80vw; min-height:50px; height:inherit" hide-details/>
                     <v-btn class="submit-button"
                            v-bind="props()"
