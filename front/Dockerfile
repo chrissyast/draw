@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run gcpbuild --verbose
-RUN dir -s
+RUN ls
 RUN echo "hello"
 
 # production stage
