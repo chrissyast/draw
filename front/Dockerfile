@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build --verbose
+RUN npm run gcpbuild --verbose
 RUN dir -s
 RUN echo "hello"
 
